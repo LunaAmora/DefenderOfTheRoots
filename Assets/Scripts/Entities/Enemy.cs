@@ -1,6 +1,6 @@
 namespace Project
 {
-    public class Enemy : Turret
+    public class Enemy : Entity
     {
         void Start()
         {
