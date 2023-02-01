@@ -6,9 +6,12 @@ namespace Project
     [RequireComponent(typeof(TurretScan))]
     public class TurretMode : MonoBehaviour
     {
+        public Projectile ProjectilePrefab;
+
         public virtual void Activate(Enemy target)
         {
-            // Todo: Look and shoot at the enemy
+            transform.up = target.transform.position - transform.position;
+            Instantiate(ProjectilePrefab, transform.position, transform.rotation);
         }
     }
 }
