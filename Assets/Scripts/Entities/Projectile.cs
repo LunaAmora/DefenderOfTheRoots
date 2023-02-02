@@ -29,5 +29,10 @@ namespace Project
                 Destroy(gameObject);
             }
         }
+
+        private void OnBecameInvisible()
+        {
+            Destroy(gameObject);
+        }
     }
 }
