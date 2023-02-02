@@ -1,9 +1,7 @@
 {
-    "name": "Project",
-    "rootNamespace": "Project",
-    "references": [
-        "GUID:772b58240f51adf4198ca6bd5aebd17a"
-    ],
+    "name": "External",
+    "rootNamespace": "External",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

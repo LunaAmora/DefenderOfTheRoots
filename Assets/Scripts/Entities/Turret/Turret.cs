@@ -7,27 +7,47 @@ namespace Project
     public class Turret : Entity
     {
         public float Damage = 1;
-        public float Frenquency = 1;
-        public bool IsActive = true;
+        public float Frenquency = 3;
 
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                if (value && !_isActive)
+                {
+                    StartScan();
+                }
+
+                _isActive = value;
+            }
+        }
+
+        private bool _isActive = true;
         private TurretScan _scan;
         private TurretMode _turretMode;
 
-        void Start()
+        private float _delay => 1 / Frenquency;
+
+        private void Start()
         {
             _scan = GetComponent<TurretScan>();
             _turretMode = GetComponent<TurretMode>();
+            ScanShoot();
         }
 
-        void Update()
+        private void StartScan() => gameObject.LeanDelayedCall(_delay, ScanShoot);
+
+        private void ScanShoot()
         {
             if (!IsActive) return;
 
-            // Todo: Call Scan() based on the Frequency
             if (_scan?.Scan() is { } target)
             {
                 _turretMode?.Activate(target);
             }
+
+            StartScan();
         }
     }
 }

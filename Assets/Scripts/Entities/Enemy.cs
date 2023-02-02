@@ -6,7 +6,7 @@ namespace Project
     [RequireComponent(typeof(Collider2D))]
     public class Enemy : Entity
     {
-        public float MaxHealth = 10;
+        public float MaxHealth = 2;
         public float Velocity = 1;
         public event Action OnDeath;
 

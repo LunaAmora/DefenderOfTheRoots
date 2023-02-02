@@ -7,7 +7,7 @@ namespace Project
     public class Projectile : Entity
     {
         public float Damage = 1;
-        public float Speed = 4;
+        public float Speed = 5;
 
         private Rigidbody2D body;
 

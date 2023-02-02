@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 1
-  Frenquency: 1
+  Frenquency: 3
   IsActive: 1
 --- !u!114 &5725713615334108697
 MonoBehaviour:
