@@ -58,23 +58,35 @@ namespace Project
 
         private void OnMouseDown()
         {
-            atualDragState = DragState.Dragging;
-            atualRootSpot.RemoveTurretToSpot(gameObject);
-        }
-        private void OnMouseUp()
-        {
-            if (atualDragState == DragState.Inside && atualStorageTurret)
+            if (atualDragState == DragState.Nulo)
             {
-                atualStorageTurret.AddResource();
-                Destroy(gameObject);
-            }
-            else if (atualRootSpot)
-            {
-                atualRootSpot.AddTurretToSpot(gameObject);
-            }
-            atualDragState = DragState.Nulo;
-        }
+                atualDragState = DragState.Dragging;
+                Globals.Instance.InputManager.SetAtualDraggable(gameObject);
 
+                if (atualRootSpot)
+                {
+                    atualRootSpot.RemoveTurretToSpot(gameObject);
+                }
+            }
+            else if (atualDragState == DragState.Dragging)
+            {
+                if (atualStorageTurret && draggableType == DraggableType.Resource)
+                {
+                    atualStorageTurret.AddResource();
+                    Destroy(gameObject);
+                }
+
+                atualDragState = DragState.Nulo;
+            }
+            else if (atualDragState == DragState.Snaped)
+            {
+                if (atualRootSpot && draggableType == DraggableType.Turret)
+                {
+                    atualRootSpot.AddTurretToSpot(gameObject);
+                }
+                atualDragState = DragState.Nulo;
+            }
+        }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {

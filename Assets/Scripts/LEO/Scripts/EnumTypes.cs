@@ -13,7 +13,7 @@ namespace Project
 
     public enum TurretType
     {
-        Collector, Machinegun, Sniper, Shotgun
+        Collector, Generic, Machinegun, Sniper, Shotgun
     }
 
     public enum DragState

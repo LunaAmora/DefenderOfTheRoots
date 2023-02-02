@@ -30,6 +30,7 @@ namespace Project
         public void AddTurretToSpot(GameObject _turret)
         {
             _turret.gameObject.transform.SetParent(transform);
+            _turret.transform.position = this.transform.position;
             atualTurret = _turret;
             ActivateCollision(false);
         }
@@ -37,6 +38,7 @@ namespace Project
         public void RemoveTurretToSpot(GameObject _turret)
         {
             atualTurret = null;
+            _turret.gameObject.transform.SetParent(null);
             ActivateCollision(true);
         }
 
