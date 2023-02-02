@@ -6,11 +6,13 @@ public class Storage_Turret : MonoBehaviour
 {
     int resourceQuantity;
 
+    TurretUpgrade_UI turretUpgrade_UI;
 
 
-
-
-
+    private void Awake()
+    {
+        turretUpgrade_UI = GameObject.Find("Canvas").transform.Find("TurretUpgrade_Painel").GetComponent<TurretUpgrade_UI>();
+    }
 
     public void AddResource()
     {
@@ -24,11 +26,14 @@ public class Storage_Turret : MonoBehaviour
 
 
 
-
-
-
-
-
+    private void OnMouseEnter()
+    {
+        turretUpgrade_UI.OpenClosePainel(true, transform.parent.GetComponent<RootSpot>());
+    }
+    private void OnMouseExit()
+    {
+        turretUpgrade_UI.OpenClosePainel(false, null);
+    }
 
 
 

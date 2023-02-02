@@ -32,6 +32,7 @@ public class RootSpot : MonoBehaviour
 
     public void AddTurretToSpot(GameObject _turret)
     {
+        _turret.gameObject.transform.SetParent(transform);
         atualTurret = _turret;
         ActivateCollision(false);
     }
