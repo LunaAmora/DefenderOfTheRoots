@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class NewTurret_UI : MonoBehaviour
 {
+    int resourceQuantity;
+    DraggableObject atualDraggableObject = null;
+
+
     CanvasGroup canvasGroup;
     Storage_Turret atualStorageTurret;
     
@@ -14,7 +18,6 @@ public class NewTurret_UI : MonoBehaviour
     {
         canvasGroup = GetComponent<CanvasGroup>();
     }
-
 
 
     public void ButtonsSwitch(int i)
@@ -43,4 +46,17 @@ public class NewTurret_UI : MonoBehaviour
         }
     }
 
+    public void AddResourceQuantity()
+    {
+        resourceQuantity++;
+    }
+
+    public DraggableObject GetAtualDraggableObjectLocked()
+    {
+        return atualDraggableObject;
+    }
+    public void SetAtualDraggableObjectLocked(DraggableObject _draggable)
+    {
+        atualDraggableObject = _draggable;
+    }
 }

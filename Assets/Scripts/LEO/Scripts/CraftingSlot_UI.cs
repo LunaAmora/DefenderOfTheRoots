@@ -5,26 +5,37 @@ using UnityEngine.EventSystems;
 
 namespace Project
 {
-    public class CraftingSlot_UI : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
+    public class CraftingSlot_UI : MonoBehaviour, IPointerDownHandler
     {
+        NewTurret_UI newTurretUI;
+
+        private void Awake()
+        {
+            newTurretUI = transform.parent.GetComponentInParent<NewTurret_UI>();
+        }
+
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (Globals.Instance.InputManager.GetAtualDraggable())
+            if (Globals.Instance.InputManager.GetAtualDraggable() && !newTurretUI.GetAtualDraggableObjectLocked())
             {
-                DraggableObject atualDraggable = Globals.Instance.InputManager.GetAtualDraggable().GetComponent<DraggableObject>();
+                DraggableObject _atualDraggable = Globals.Instance.InputManager.GetAtualDraggable().GetComponent<DraggableObject>();
 
-                if (atualDraggable.GetDraggableType() == DraggableType.Turret)
+                if (_atualDraggable.GetDraggableType() == DraggableType.Turret)
                 {
-                    atualDraggable.transform.SetParent(this.transform);
-                    atualDraggable.transform.position = transform.position;
+                    _atualDraggable.SetAtualDragState(DragState.Locked);
+                    _atualDraggable.transform.SetParent(this.transform);
+                    _atualDraggable.transform.position = transform.position;
+                    newTurretUI.SetAtualDraggableObjectLocked(_atualDraggable);
                 }
+            }
+            else if (newTurretUI.GetAtualDraggableObjectLocked())
+            {
+                newTurretUI.GetAtualDraggableObjectLocked().SetAtualDragState(DragState.Dragging);
+                newTurretUI.GetAtualDraggableObjectLocked().transform.SetParent(null);
+                newTurretUI.SetAtualDraggableObjectLocked(null);
             }
         }
         
-        public void OnPointerUp(PointerEventData eventData)
-        {
-
-        }
     }
 }
 

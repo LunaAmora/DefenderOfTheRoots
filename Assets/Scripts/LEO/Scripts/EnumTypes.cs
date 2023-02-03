@@ -18,6 +18,6 @@ namespace Project
 
     public enum DragState
     {
-        Nulo, Dragging, Snaped, Inside
+        Nulo, Dragging, Snaped, Locked
     }
 }

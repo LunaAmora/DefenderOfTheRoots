@@ -30,6 +30,20 @@ namespace Project
         private void FixedUpdate()
         {
             Vector3 _pos = new Vector3();
+            if (atualDragState == DragState.Dragging)
+            {
+                _pos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+                transform.position = _pos;
+                spriteTransform.position = transform.position;
+            }
+            if (atualDragState == DragState.Snaped)
+            {
+                _pos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+                transform.position = _pos;
+                spriteTransform.position = atualRootSpot.transform.position;
+            }
+
+            /*Vector3 _pos = new Vector3();
             if (atualDragState == DragState.Snaped && atualRootSpot)
             {
                 _pos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
@@ -41,13 +55,17 @@ namespace Project
                 _pos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
                 transform.position = _pos;
                 spriteTransform.position = transform.position;
-            }
+            }*/
         }
 
 
         public DraggableType GetDraggableType()
         {
             return draggableType;
+        }
+        public void SetAtualDragState(DragState _dragState)
+        {
+            atualDragState = _dragState;
         }
         public DragState GetAtualDragState()
         {
@@ -58,7 +76,7 @@ namespace Project
 
         private void OnMouseDown()
         {
-            if (atualDragState == DragState.Nulo)
+            if (atualDragState == DragState.Nulo || atualDragState == DragState.Locked)
             {
                 atualDragState = DragState.Dragging;
                 Globals.Instance.InputManager.SetAtualDraggable(gameObject);
@@ -73,18 +91,17 @@ namespace Project
                 if (atualStorageTurret && draggableType == DraggableType.Resource)
                 {
                     atualStorageTurret.AddResource();
+                    atualDragState = DragState.Nulo;
                     Destroy(gameObject);
                 }
-
-                atualDragState = DragState.Nulo;
             }
             else if (atualDragState == DragState.Snaped)
             {
                 if (atualRootSpot && draggableType == DraggableType.Turret)
                 {
                     atualRootSpot.AddTurretToSpot(gameObject);
+                    atualDragState = DragState.Locked;
                 }
-                atualDragState = DragState.Nulo;
             }
         }
 
@@ -101,7 +118,7 @@ namespace Project
             else if (collision.GetComponent<Storage_Turret>() && draggableType == DraggableType.Resource)
             {
                 atualStorageTurret = collision.GetComponent<Storage_Turret>();
-                atualDragState = DragState.Inside;
+                atualDragState = DragState.Locked;
             }
         }
         private void OnTriggerExit2D(Collider2D collision)
