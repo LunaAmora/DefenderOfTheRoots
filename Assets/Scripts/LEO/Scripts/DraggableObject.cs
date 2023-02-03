@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Project
 {
@@ -14,32 +11,28 @@ namespace Project
         RootSpot atualRootSpot;
         Storage_Turret atualStorageTurret;
 
-
         private void Awake()
         {
             spriteTransform = transform.Find("Sprite");
         }
+
         private void Start()
         {
-            if (draggableType == DraggableType.Turret && transform.parent)
-            {
-                if(transform.parent.GetComponent<RootSpot>())
-                    if (transform.parent.GetComponent<RootSpot>())
-                        atualRootSpot = transform.parent.GetComponent<RootSpot>();
-            }
+            if (draggableType == DraggableType.Turret &&
+                transform.parent?.GetComponent<RootSpot>() is { } rootSpot)
+                atualRootSpot = rootSpot;
         }
+
         private void FixedUpdate()
         {
-            Vector3 _pos = new Vector3();
+            Vector2 _pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             if (atualDragState == DragState.Dragging)
             {
-                _pos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
                 transform.position = _pos;
                 spriteTransform.position = transform.position;
             }
-            if (atualDragState == DragState.Snaped)
+            else if (atualDragState == DragState.Snaped)
             {
-                _pos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
                 transform.position = _pos;
                 spriteTransform.position = atualRootSpot.transform.position;
             }
@@ -50,78 +43,71 @@ namespace Project
         {
             return draggableType;
         }
+
         public void SetAtualDragState(DragState _dragState)
         {
             atualDragState = _dragState;
         }
+
         public DragState GetAtualDragState()
         {
             return atualDragState;
         }
 
-
-
         private void OnMouseDown()
         {
-            if (atualDragState == DragState.Nulo || atualDragState == DragState.Locked)
+            switch (atualDragState, draggableType)
             {
-                atualDragState = DragState.Dragging;
-                Globals.Instance.InputManager.SetAtualDraggable(gameObject);
+                case (DragState.Nulo | DragState.Locked, _):
+                    Globals.Instance.InputManager.SetAtualDraggable(gameObject);
+                    atualRootSpot?.RemoveTurretFromSpot(gameObject);
+                    atualDragState = DragState.Dragging;
+                    break;
 
-                if (atualRootSpot)
-                {
-                    atualRootSpot.RemoveTurretToSpot(gameObject);
-                }
-            }
-            else if (atualDragState == DragState.Dragging)
-            {
-                if (atualStorageTurret && draggableType == DraggableType.Resource)
-                {
+                case (DragState.Dragging, DraggableType.Resource) when atualStorageTurret:
                     atualStorageTurret.AddResource();
                     atualDragState = DragState.Nulo;
                     Destroy(gameObject);
-                }
-            }
-            else if (atualDragState == DragState.Snaped)
-            {
-                if (atualRootSpot && draggableType == DraggableType.Turret)
-                {
+                    break;
+
+                case (DragState.Snaped, DraggableType.Turret) when atualRootSpot:
                     atualRootSpot.AddTurretToSpot(gameObject);
                     atualDragState = DragState.Locked;
-                }
+                    break;
             }
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.GetComponent<RootSpot>() && draggableType == DraggableType.Turret)
+            switch (draggableType)
             {
-                if (!collision.GetComponent<RootSpot>().GetAtualTurretOnSpot())
-                {
+                case DraggableType.Turret when
+                    (collision.GetComponent<RootSpot>() is { } rootSpot && !rootSpot?.GetAtualTurretOnSpot()):
                     atualDragState = DragState.Snaped;
-                    atualRootSpot = collision.GetComponent<RootSpot>();
-                }
-            }
-            else if (collision.GetComponent<Storage_Turret>() && draggableType == DraggableType.Resource)
-            {
-                atualStorageTurret = collision.GetComponent<Storage_Turret>();
-                atualDragState = DragState.Locked;
+                    atualRootSpot = rootSpot;
+                    break;
+
+                case DraggableType.Resource when collision.GetComponent<Storage_Turret>() is { } storageTurret:
+                    atualStorageTurret = storageTurret;
+                    atualDragState = DragState.Locked;
+                    break;
             }
         }
+
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.GetComponent<RootSpot>() && draggableType == DraggableType.Turret)
+            switch (draggableType)
             {
-                atualDragState = DragState.Dragging;
-                atualRootSpot = collision.GetComponent<RootSpot>();
-            }
-            else if (collision.GetComponent<Storage_Turret>() && draggableType == DraggableType.Resource)
-            {
-                atualStorageTurret = null;
-                atualDragState = DragState.Dragging;
+                case DraggableType.Turret when collision.GetComponent<RootSpot>() is { } rootSpot:
+                    atualDragState = DragState.Dragging;
+                    atualRootSpot = rootSpot;
+                    break;
+
+                case DraggableType.Resource when collision.GetComponent<Storage_Turret>():
+                    atualStorageTurret = null;
+                    atualDragState = DragState.Dragging;
+                    break;
             }
         }
-
-
     }
 }

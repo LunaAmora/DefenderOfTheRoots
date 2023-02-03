@@ -35,7 +35,7 @@ namespace Project
             ActivateCollision(false);
         }
 
-        public void RemoveTurretToSpot(GameObject _turret)
+        public void RemoveTurretFromSpot(GameObject _turret)
         {
             atualTurret = null;
             _turret.gameObject.transform.SetParent(null);
