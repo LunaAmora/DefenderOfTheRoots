@@ -5,19 +5,11 @@ using UnityEngine;
 
 public class NewTurret_UI : MonoBehaviour
 {
+    [SerializeField] Transform craftingSlot;
+
     int resourceQuantity;
     DraggableObject atualDraggableObject = null;
-
-
-    CanvasGroup canvasGroup;
-    Storage_Turret atualStorageTurret;
     
-
-
-    private void Awake()
-    {
-        canvasGroup = GetComponent<CanvasGroup>();
-    }
 
 
     public void ButtonsSwitch(int i)
@@ -25,19 +17,18 @@ public class NewTurret_UI : MonoBehaviour
         switch (i)
         {
             case 0:
-                if (atualStorageTurret.GetAtualResourceQuantity() >= 4)
+                if (resourceQuantity >= 4)
                 {
-                    print("Collector");
-                    Globals.Instance.Instantiator.InstantiateTurret(TurretType.Collector, atualStorageTurret.transform.position);
-                    Destroy(gameObject);
+                    Destroy(atualDraggableObject);
+                    Globals.Instance.Instantiator.InstantiateTurret(TurretType.Collector, craftingSlot.position);
                 }
                 break;
             case 1:
-                if (atualStorageTurret.GetAtualResourceQuantity() >= 2)
+                if (resourceQuantity >= 2)
                 {
-                    print("New Turret");
-                    Globals.Instance.Instantiator.InstantiateTurret(TurretType.Generic, atualStorageTurret.transform.position);
-                    Destroy(gameObject);
+                    Destroy(atualDraggableObject);
+                    GameObject _GO = Globals.Instance.Instantiator.InstantiateTurret(TurretType.Generic, craftingSlot.position);
+                    _GO.transform.SetParent(craftingSlot);
                 }
                 break;
 

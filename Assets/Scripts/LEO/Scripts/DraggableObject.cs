@@ -21,10 +21,11 @@ namespace Project
         }
         private void Start()
         {
-            if (draggableType == DraggableType.Turret)
+            if (draggableType == DraggableType.Turret && transform.parent)
             {
-                if (transform.parent.GetComponent<RootSpot>())
-                    atualRootSpot = transform.parent.GetComponent<RootSpot>();
+                if(transform.parent.GetComponent<RootSpot>())
+                    if (transform.parent.GetComponent<RootSpot>())
+                        atualRootSpot = transform.parent.GetComponent<RootSpot>();
             }
         }
         private void FixedUpdate()
@@ -42,20 +43,6 @@ namespace Project
                 transform.position = _pos;
                 spriteTransform.position = atualRootSpot.transform.position;
             }
-
-            /*Vector3 _pos = new Vector3();
-            if (atualDragState == DragState.Snaped && atualRootSpot)
-            {
-                _pos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-                transform.position = _pos;
-                spriteTransform.position = atualRootSpot.transform.position;
-            }
-            else if (atualDragState == DragState.Dragging || atualDragState == DragState.Inside)
-            {
-                _pos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-                transform.position = _pos;
-                spriteTransform.position = transform.position;
-            }*/
         }
 
 

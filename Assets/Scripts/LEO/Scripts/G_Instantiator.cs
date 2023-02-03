@@ -12,8 +12,10 @@ namespace Project
         [SerializeField] GameObject shotgunTurret_Prefab;
 
 
-        public void InstantiateTurret(TurretType _turretType, Vector3 _pos)
+        public GameObject InstantiateTurret(TurretType _turretType, Vector3 _pos)
         {
+            GameObject _goToReturn = null;
+
             switch (_turretType)
             {
                 case TurretType.Collector:
@@ -32,6 +34,8 @@ namespace Project
                 default:
                     break;
             }
+
+            return _goToReturn;
         }
 
     }
