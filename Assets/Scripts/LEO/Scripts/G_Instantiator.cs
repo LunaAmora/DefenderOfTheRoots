@@ -7,9 +7,7 @@ namespace Project
     public class G_Instantiator : MonoBehaviour
     {
         [SerializeField] GameObject collectorTurret_Prefab;
-        [SerializeField] GameObject machinegunTurret_Prefab;
-        [SerializeField] GameObject sniperTurret_Prefab;
-        [SerializeField] GameObject shotgunTurret_Prefab;
+        [SerializeField] GameObject genericTurret_Prefab;
 
 
         public GameObject InstantiateTurret(TurretType _turretType, Vector3 _pos)
@@ -19,16 +17,10 @@ namespace Project
             switch (_turretType)
             {
                 case TurretType.Collector:
-                    Instantiate(collectorTurret_Prefab, _pos, Quaternion.identity);
+                    _goToReturn = Instantiate(collectorTurret_Prefab, _pos, Quaternion.identity);
                     break;
-                case TurretType.Machinegun:
-                    Instantiate(machinegunTurret_Prefab, _pos, Quaternion.identity);
-                    break;
-                case TurretType.Sniper:
-                    Instantiate(sniperTurret_Prefab, _pos, Quaternion.identity);
-                    break;
-                case TurretType.Shotgun:
-                    Instantiate(shotgunTurret_Prefab, _pos, Quaternion.identity);
+                case TurretType.Generic:
+                    _goToReturn = Instantiate(genericTurret_Prefab, _pos, Quaternion.identity);
                     break;
 
                 default:

@@ -58,7 +58,7 @@ namespace Project
         {
             switch (atualDragState, draggableType)
             {
-                case (DragState.Nulo | DragState.Locked, _):
+                case (DragState.Nulo or DragState.Locked, _):
                     Globals.Instance.InputManager.SetAtualDraggable(gameObject);
                     atualRootSpot?.RemoveTurretFromSpot(gameObject);
                     atualDragState = DragState.Dragging;
@@ -75,6 +75,8 @@ namespace Project
                     atualDragState = DragState.Locked;
                     break;
             }
+
+            spriteTransform.position = transform.position;
         }
 
         private void OnTriggerEnter2D(Collider2D collision)

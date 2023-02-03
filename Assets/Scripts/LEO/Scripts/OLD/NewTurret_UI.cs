@@ -19,14 +19,15 @@ public class NewTurret_UI : MonoBehaviour
             case 0:
                 if (resourceQuantity >= 4)
                 {
-                    Destroy(atualDraggableObject);
-                    Globals.Instance.Instantiator.InstantiateTurret(TurretType.Collector, craftingSlot.position);
+                    Destroy(atualDraggableObject.gameObject);
+                    GameObject _GO = Globals.Instance.Instantiator.InstantiateTurret(TurretType.Collector, craftingSlot.position);
+                    _GO.transform.SetParent(craftingSlot);
                 }
                 break;
             case 1:
                 if (resourceQuantity >= 2)
                 {
-                    Destroy(atualDraggableObject);
+                    Destroy(atualDraggableObject.gameObject);
                     GameObject _GO = Globals.Instance.Instantiator.InstantiateTurret(TurretType.Generic, craftingSlot.position);
                     _GO.transform.SetParent(craftingSlot);
                 }
